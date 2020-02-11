@@ -10,5 +10,8 @@
   "scripts": {
     "start": " SET NODE_ENV=production nodemon index",
     "dev": "nodemon index"
+  },
+  "devDependencies": {
+    "morgan": "^1.9.1"
   }
 }
