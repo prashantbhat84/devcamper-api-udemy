@@ -1,4 +1,5 @@
 const Bootcamp = require("../models/Bootcamp");
+const ErrorResponse = require("../utils/errorResponse");
 
 //@desc  Get All Bootcamps
 //@route   get /api/v1/bootcamps
@@ -25,15 +26,17 @@ exports.getBootcamp = async (req, res, next) => {
   try {
     const bootcamp = await Bootcamp.findById(ID);
     if (!bootcamp) {
-      return res
-        .status(500)
-        .send({ message: "This Bootcamp does not exist or has been deleted" });
+      return next(
+        new ErrorResponse(
+          `Bootcamp with ID ${ID} has been deleted or does not exist`,
+          404
+        )
+      );
     }
 
     res.status(200).send({ status: true, data: bootcamp });
   } catch (err) {
-    // res.status(400).json({ status: false });
-    next(err);
+    next(new ErrorResponse(`Bootcamp not found with ID :${ID}`, 404));
   }
 };
 //@desc  Create  new Bootcamp
