@@ -20,9 +20,16 @@ if (process.env.NODE_ENV === "development") {
 //mount the  bootcamp router file
 app.use("/api/v1/bootcamps", require("./routes/bootcamps"));
 
-app.listen(process.env.PORT || 5000, () => {
+const server = app.listen(process.env.PORT || 5000, () => {
   console.log(
     `Server running in ${process.env.NODE_ENV} on PORT:${process.env.PORT ||
       5000}`
   );
+});
+
+//Handle unhandled rejection
+process.on("unhandledRejection", (err, promise) => {
+  console.log(`DB rejection :${err.message}`);
+  //close server and exit process
+  server.close(() => process.exit(1));
 });
