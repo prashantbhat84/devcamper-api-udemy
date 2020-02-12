@@ -3,17 +3,34 @@ const Bootcamp = require("../models/Bootcamp");
 //@desc  Get All Bootcamps
 //@route   get /api/v1/bootcamps
 //@access  public
-exports.getBootcamps = (req, res, next) => {
-  res.status(200).send({ status: true, message: "get all bootcamps" });
+exports.getBootcamps = async (req, res, next) => {
+  try {
+    const bootcamps = await Bootcamp.find();
+    console.log(Object.values(bootcamps).length);
+
+    res.status(200).json({ status: true, data: Object.values(bootcamps) });
+  } catch (error) {
+    res.status(400).json({ status: false });
+  }
 };
 
 //@desc  Get single Bootcamp
 //@route   get /api/v1/bootcamps/:id
 //@access  public
-exports.getBootcamp = (req, res, next) => {
-  res
-    .status(200)
-    .send({ status: true, message: `Get bootcamp by id ${req.params.id}` });
+exports.getBootcamp = async (req, res, next) => {
+  const ID = req.params.id;
+  try {
+    const bootcamp = await Bootcamp.findById(ID);
+    if (!bootcamp) {
+      return res
+        .status(404)
+        .send({ message: "This Bootcamp does not exist or has been deleted" });
+    }
+
+    res.status(200).send({ status: true, data: bootcamp });
+  } catch (error) {
+    res.status(400).json({ status: false });
+  }
 };
 //@desc  Create  new Bootcamp
 //@route   post /api/v1/bootcamps
