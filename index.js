@@ -1,5 +1,7 @@
 const express = require("express");
 const app = express();
+//body parser
+app.use(express.json());
 const connectdb = require("./config/db"); // connect to mongodb
 const colors = require("colors");
 
