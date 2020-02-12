@@ -10,7 +10,7 @@
     "mongoose": "^5.8.11"
   },
   "scripts": {
-    "start": " SET NODE_ENV=production nodemon index",
+    "start": " SET NODE_ENV=production node index",
     "dev": "nodemon index"
   },
   "devDependencies": {
