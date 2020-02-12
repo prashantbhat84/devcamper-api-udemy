@@ -6,15 +6,12 @@ const Bootcamp = require("../models/Bootcamp");
 exports.getBootcamps = async (req, res, next) => {
   try {
     const bootcamps = await Bootcamp.find();
-    console.log(Object.values(bootcamps).length);
 
-    res
-      .status(200)
-      .json({
-        status: true,
-        count: bootcamps.length,
-        data: Object.values(bootcamps)
-      });
+    res.status(200).json({
+      status: true,
+      count: bootcamps.length,
+      data: Object.values(bootcamps)
+    });
   } catch (error) {
     res.status(400).json({ status: false });
   }
@@ -29,13 +26,14 @@ exports.getBootcamp = async (req, res, next) => {
     const bootcamp = await Bootcamp.findById(ID);
     if (!bootcamp) {
       return res
-        .status(404)
+        .status(500)
         .send({ message: "This Bootcamp does not exist or has been deleted" });
     }
 
     res.status(200).send({ status: true, data: bootcamp });
-  } catch (error) {
-    res.status(400).json({ status: false });
+  } catch (err) {
+    // res.status(400).json({ status: false });
+    next(err);
   }
 };
 //@desc  Create  new Bootcamp

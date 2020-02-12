@@ -4,6 +4,7 @@ const app = express();
 app.use(express.json());
 const connectdb = require("./config/db"); // connect to mongodb
 const colors = require("colors");
+const errorHandler = require("./middleware/error");
 
 //const port = process.env.PORT || 5000;
 const morgan = require("morgan");
@@ -22,6 +23,8 @@ if (process.env.NODE_ENV === "development") {
 
 //mount the  bootcamp router file
 app.use("/api/v1/bootcamps", require("./routes/bootcamps"));
+//error handler
+app.use(errorHandler);
 
 const server = app.listen(process.env.PORT || 5000, () => {
   console.log(
