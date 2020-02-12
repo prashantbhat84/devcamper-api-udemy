@@ -1,5 +1,7 @@
 const express = require("express");
 const app = express();
+const connectdb = require("./config/db"); // connect to mongodb
+
 //const port = process.env.PORT || 5000;
 const morgan = require("morgan");
 
@@ -7,8 +9,9 @@ const dotenv = require("dotenv");
 //load env variables
 dotenv.config({ path: "./config/config.env" });
 const router = express.Router();
+// connect to mongodb atlas
+connectdb();
 // use the logger middleware in development mode only.
-console.log(process.env.PORT || 5000);
 
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
