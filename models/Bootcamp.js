@@ -114,6 +114,8 @@ BootcampSchema.pre("save", function(next) {
 BootcampSchema.pre("save", async function(next) {
   try {
     const loc = await GeoCoder.geocode(this.address);
+
+    console.log(loc);
     this.location = {
       type: "Point",
       coordinates: [loc[0].longitude, loc[0].latitude],
