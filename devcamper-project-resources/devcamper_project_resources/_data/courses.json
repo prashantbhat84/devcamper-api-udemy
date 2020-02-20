@@ -1,11 +1,10 @@
-[
-	{
+[{
 		"_id": "5d725a4a7b292f5f8ceff789",
 		"title": "Front End Web Development",
 		"description": "This course will provide you with all of the essentials to become a successful frontend web developer. You will learn to master HTML, CSS and front end JavaScript, along with tools like Git, VSCode and front end frameworks like Vue",
 		"weeks": 8,
 		"tuition": 8000,
-		"minimumSkill": "beginner",
+		"minimumSkill": "beg",
 		"scholarhipsAvailable": true,
 		"bootcamp": "5d713995b721c3bb38c1f5d0",
 		"user": "5d7a514b5d2c12c7449be045"
@@ -49,7 +48,7 @@
 		"description": "Get started building websites and web apps with HTML/CSS/JavaScript/PHP. We teach you",
 		"weeks": 10,
 		"tuition": 9000,
-		"minimumSkill": "beginner",
+		"minimumSkill": "beg",
 		"scholarhipsAvailable": true,
 		"bootcamp": "5d725a037b292f5f8ceff787",
 		"user": "5c8a1d5b0190b214360dc031"
@@ -71,7 +70,7 @@
 		"description": "This course will teach you how to build high quality web applications with technologies like React, Node.js, PHP & Laravel",
 		"weeks": 8,
 		"tuition": 8000,
-		"minimumSkill": "beginner",
+		"minimumSkill": "beg",
 		"scholarhipsAvailable": false,
 		"bootcamp": "5d725a1b7b292f5f8ceff788",
 		"user": "5c8a1d5b0190b214360dc032"
