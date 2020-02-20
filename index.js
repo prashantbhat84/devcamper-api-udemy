@@ -22,9 +22,7 @@ if (process.env.NODE_ENV === "development") {
 }
 
 //mount the  resource router file
-app.use("/api/v1/bootcamps", require("./routes/bootcamps"));
-app.use("/api/v1/courses", require("./routes/courses"));
-app.use("/api/v1/auth", require("./routes/auth"));
+
 //error handler
 app.use(errorHandler);
 
