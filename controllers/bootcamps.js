@@ -7,10 +7,12 @@ const geocoder = require("../utils/geocode");
 //@route   get /api/v1/bootcamps
 //@access  public
 exports.getBootcamps = asyncHandler(async (req, res, next) => {
-  let query = await Bootcamp.find();
+  let query;
   const reqQuery = { ...req.query };
   const removefields = ["page", "limit"];
   removefields.forEach(param => delete reqQuery[param]);
+  let querystr = JSON.stringify(reqQuery);
+  query = Bootcamp.find(JSON.parse(querystr)).populate("courses");
 
   //pagination
   const page = parseInt(req.query.page, 10) || 1;
@@ -100,7 +102,7 @@ exports.updateBootcamp = asyncHandler(async (req, res, next) => {
 //@route   post /api/v1/bootcamps/:id
 //@access  private
 exports.deleteBootcamp = asyncHandler(async (req, res, next) => {
-  let bootcamp = await Bootcamp.findByIdAndDelete(req.params.id);
+  let bootcamp = await Bootcamp.findById(req.params.id);
   if (!bootcamp) {
     return next(
       new ErrorResponse(
@@ -109,6 +111,7 @@ exports.deleteBootcamp = asyncHandler(async (req, res, next) => {
       )
     );
   }
+  bootcamp.remove();
   res.status(200).send({ success: true, data: {} });
 });
 //@desc Get Bootcamps within a radius
