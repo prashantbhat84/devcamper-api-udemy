@@ -7,45 +7,44 @@ const geocoder = require("../utils/geocode");
 //@route   get /api/v1/bootcamps
 //@access  public
 exports.getBootcamps = asyncHandler(async (req, res, next) => {
+  let query = await Bootcamp.find();
   const reqQuery = { ...req.query };
+  const removefields = ["page", "limit"];
+  removefields.forEach(param => delete reqQuery[param]);
 
-  //remove fields
-  const removeFields = ["select", "sort"];
+  //pagination
+  const page = parseInt(req.query.page, 10) || 1;
+  const limit = parseInt(req.query.limit, 10) || 25;
+  const startIndex = (page - 1) * limit;
+  const endIndex = page * limit;
+  const total = Bootcamp.countDocuments();
 
-  //loop over removeFields and delete them from reqQuery;
-  removeFields.forEach(param => {
-    delete reqQuery[param];
-  });
-
-  let queryStr = JSON.stringify(reqQuery);
-  //create operators ($gt,$gte,$lt)
-  queryStr = queryStr.replace(/\b(gt|gte|lt|lte|in)\b/g, match => `$${match}`);
-
-  //finding resources
-  let query = await Bootcamp.find(JSON.parse(queryStr));
-
-  // query = query.select("name");
-
-  //SELECT FIELDS
-  if (req.query.select) {
-    const fields = req.query.select.split(",").join(" ");
-    query = await Bootcamp.find(JSON.parse(queryStr)).select(fields);
-  }
-  //sort
-  if (req.query.sort) {
-    const sorted = req.query.sort.split(",").join(" ");
-    query = await Bootcamp.find(JSON.parse(queryStr)).sort(sorted);
-  } //else {
-  //   query = await Bootcamp.find(JSON.parse(queryStr), { _id: 0 }).sort(
-  //     -createdAt
-  //   );
-  // }
+  query = await Bootcamp.find()
+    .skip(startIndex)
+    .limit(limit);
 
   const bootcamps = await query;
+
+  //pagination result
+  let pagination = {};
+
+  if (endIndex <= total) {
+    pagination.next = {
+      page: page + 1,
+      limit: limit
+    };
+  }
+  if (startIndex > 0) {
+    pagination.prev = {
+      page: page - 1,
+      limit
+    };
+  }
 
   res.status(200).json({
     status: true,
     count: bootcamps.length,
+    pagination,
     data: Object.values(bootcamps)
   });
 });
@@ -54,6 +53,8 @@ exports.getBootcamps = asyncHandler(async (req, res, next) => {
 //@route   get /api/v1/bootcamps/:id
 //@access  public
 exports.getBootcamp = asyncHandler(async (req, res, next) => {
+  console.log("req");
+  console.log(req.query);
   const ID = req.params.id;
 
   const bootcamp = await Bootcamp.findById(ID);
