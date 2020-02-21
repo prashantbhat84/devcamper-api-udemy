@@ -63,7 +63,8 @@ const bootcampSchema = new mongoose.Schema({
       "UI/UX",
       "Data Science",
       "Business",
-      "Other"
+      "Other",
+      "Full Stack Development"
     ]
   },
   averageRating: {
