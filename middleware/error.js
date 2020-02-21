@@ -9,6 +9,7 @@ const errorHandler = (err, req, res, next) => {
   //   console.log(err);
 
   if (err.name === "CastError") {
+    // catch block error in bootcamp controller
     const message = `Resource with ID :${err.value} does not exist`;
     error = new ErrorResponse(message, 404);
   }

@@ -10,7 +10,7 @@ exports.getBootcamps = async (req, res, next) => {
       .status(200)
       .json({ success: true, count: bootcamps.length, data: bootcamps });
   } catch (error) {
-    res.status(400).json({ success: false });
+    next(error);
   }
 };
 
@@ -46,7 +46,7 @@ exports.createBootcamp = async (req, res, next) => {
     const bootcamp = await Bootcamp.create(req.body);
     res.status(201).json({ success: true, data: bootcamp });
   } catch (error) {
-    res.status(400).send({ success: false, errormessage: error.message });
+    next(error);
   }
 };
 
@@ -60,17 +60,21 @@ exports.updateBootcamp = async (req, res, next) => {
       runValidators: true
     });
     if (!bootcamp) {
-      return res
-        .status(400)
-        .json({ success: false, msg: "Bootcamp not available" });
+      return next(
+        new ErrorResponse(
+          `Bootcamp with ID :${req.params.id} does not exist `,
+          404
+        )
+      );
     }
     res.status(200).json({ success: true, data: bootcamp });
   } catch (error) {
-    res.status(400).json({
-      success: false,
-      msg: "Bootcamp update error",
-      errormessage: error.message
-    });
+    // res.status(400).json({
+    //   success: false,
+    //   msg: "Bootcamp update error",
+    //   errormessage: error.message
+    // });
+    next(error);
   }
 };
 //@desc  delete specific bootcamp
@@ -80,16 +84,20 @@ exports.deleteBootcamp = async (req, res, next) => {
   try {
     const bootcamp = await Bootcamp.findByIdAndDelete(req.params.id);
     if (!bootcamp) {
-      return res
-        .status(400)
-        .json({ success: false, msg: "Bootcamp not available" });
+      return next(
+        new ErrorResponse(
+          `Bootcamp with ID :${req.params.id} does not exist `,
+          404
+        )
+      );
     }
     res.status(200).json({ success: true, data: {} });
   } catch (error) {
-    res.status(400).json({
-      success: false,
-      msg: "Bootcamp delete error",
-      errormessage: error.message
-    });
+    // res.status(400).json({
+    //   success: false,
+    //   msg: "Bootcamp delete error",
+    //   errormessage: error.message
+    // });
+    next(error);
   }
 };
