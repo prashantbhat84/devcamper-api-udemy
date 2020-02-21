@@ -20,10 +20,11 @@ const dotenv = require("dotenv");
 dotenv.config({ path: "./config/config.env" });
 const router = express.Router();
 // connect to mongodb atlas
-// connectdb();
+connectdb();
 // use the logger middleware in development mode only.
 
 if (process.env.NODE_ENV === "development") {
+  //log http requests to a txt file
   // app.use(morgan("combined", { stream: accessLogStream }));
   app.use(morgan("dev"));
 }

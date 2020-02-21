@@ -9,7 +9,7 @@ dotenv.config({ path: "./config/config.env" });
 //load models
 
 const bootcamp = require("./models/Bootcamp");
-const Course = require("./models/Course");
+// const Course = require("./models/Course");
 
 // connect to db
 mongoose
@@ -49,7 +49,7 @@ const courses = JSON.parse(
 const importdata = async () => {
   try {
     await bootcamp.create(bootcamps);
-    await Course.create(courses);
+    // await Course.create(courses);
     console.log("Data imported to DB...".green.inverse.bold);
     process.exit();
   } catch (error) {
@@ -60,7 +60,7 @@ const importdata = async () => {
 const deletedata = async () => {
   try {
     await bootcamp.deleteMany();
-    await Course.deleteMany();
+    // await Course.deleteMany();
     console.log("Data deleted from DB...".red.inverse);
     process.exit();
   } catch (error) {
