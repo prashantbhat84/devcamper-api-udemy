@@ -3,7 +3,7 @@ const errorHandler = (err, req, res, next) => {
   let error = { ...err };
   error.message = err.message;
   //log to console for dev only while testing and you get an error code of 500
-  //   console.log(err);
+  //   console.log(err.errors);
 
   //mongoose bad object ID
 
@@ -17,6 +17,12 @@ const errorHandler = (err, req, res, next) => {
     const message = "Resource already exists";
     error = new ErrorResponse(message, 409);
   }
+  //validation error
+  if (err.name === "ValidationError") {
+    const message = Object.values(err.errors).map(val => val.message);
+    error = new ErrorResponse(message, 400);
+  }
+
   res
     .status(error.statusCode || 500)
     .json({ success: false, error: error.message || "Server Error" });
