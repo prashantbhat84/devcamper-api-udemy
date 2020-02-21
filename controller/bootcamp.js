@@ -22,8 +22,11 @@ exports.getBootcamp = async (req, res, next) => {
     const bootcamp = await Bootcamp.findById(req.params.id);
 
     if (!bootcamp) {
-      return new next(
-        ErrorResponse(`Bootcamp with ID :${req.params.id} does not exist `, 404)
+      return next(
+        new ErrorResponse(
+          `Bootcamp with ID :${req.params.id} does not exist `,
+          404
+        )
       );
     }
     res.status(200).json({
@@ -32,13 +35,7 @@ exports.getBootcamp = async (req, res, next) => {
       data: bootcamp
     });
   } catch (error) {
-    // res.status(400).json({ success: false });
-    next(
-      new ErrorResponse(
-        `Bootcamp with ID :${req.params.id} does not exist `,
-        404
-      )
-    );
+    next(error);
   }
 };
 //@desc  Create New bootcamp
