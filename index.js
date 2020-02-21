@@ -8,6 +8,12 @@ const colors = require("colors");
 
 //const port = process.env.PORT || 5000;
 const morgan = require("morgan");
+const fs = require("fs");
+const path = require("path");
+// create a write stream (in append mode)
+let accessLogStream = fs.createWriteStream(path.join(__dirname, "access.txt"), {
+  flags: "a"
+});
 
 const dotenv = require("dotenv");
 //load env variables
@@ -18,6 +24,7 @@ const router = express.Router();
 // use the logger middleware in development mode only.
 
 if (process.env.NODE_ENV === "development") {
+  // app.use(morgan("combined", { stream: accessLogStream }));
   app.use(morgan("dev"));
 }
 
