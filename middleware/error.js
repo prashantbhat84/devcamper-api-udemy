@@ -22,7 +22,7 @@ const errorHandler = (err, req, res, next) => {
     const message = Object.values(err.errors).map(val => val.message);
     error = new ErrorResponse(message, 400);
   }
-
+  //for error  object below  please refer to any if blocks and the first line of destructuring
   res
     .status(error.statusCode || 500)
     .json({ success: false, error: error.message || "Server Error" });
