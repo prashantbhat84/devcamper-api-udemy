@@ -4,7 +4,7 @@ const app = express();
 app.use(express.json());
 const connectdb = require("./config/db"); // connect to mongodb
 const colors = require("colors");
-const errorHandler = require("./middleware/error");
+// const errorHandler = require("./middleware/error");
 
 //const port = process.env.PORT || 5000;
 const morgan = require("morgan");
@@ -14,7 +14,7 @@ const dotenv = require("dotenv");
 dotenv.config({ path: "./config/config.env" });
 const router = express.Router();
 // connect to mongodb atlas
-connectdb();
+// connectdb();
 // use the logger middleware in development mode only.
 
 if (process.env.NODE_ENV === "development") {
@@ -22,9 +22,10 @@ if (process.env.NODE_ENV === "development") {
 }
 
 //mount the  resource router file
+app.use("/api/v1/bootcamps", require("./routes/bootcamp"));
 
 //error handler
-app.use(errorHandler);
+// app.use(errorHandler);
 
 const server = app.listen(process.env.PORT || 5000, () => {
   console.log(
