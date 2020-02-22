@@ -60,16 +60,17 @@ exports.createCourse = asyncHandler(async (req, res, next) => {
 //@method   PUT /api/v1/courses/:id
 //@access   private
 exports.updateCourse = asyncHandler(async (req, res, next) => {
-  const course = await Course.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-    runValidators: true
-  });
+  let course = await Course.findById(req.params.id);
 
   if (!course) {
     return next(
       new ErrorResponse(`course with ${req.params.id} not found`, 404)
     );
   }
+  course = await Course.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true
+  });
 
   res.status(200).json({ success: true, data: course });
 });
@@ -77,13 +78,14 @@ exports.updateCourse = asyncHandler(async (req, res, next) => {
 //@method   PUT /api/v1/courses/:id
 //@access   private
 exports.deleteCourse = asyncHandler(async (req, res, next) => {
-  const course = await Course.findByIdAndDelete(req.params.id);
+  const course = await Course.findById(req.params.id);
 
   if (!course) {
     return next(
       new ErrorResponse(`course with ${req.params.id} not found`, 404)
     );
   }
+  course.remove();
 
   res.status(200).json({ success: true, data: {} });
 });
