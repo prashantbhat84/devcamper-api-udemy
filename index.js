@@ -1,10 +1,12 @@
 const express = require("express");
 const app = express();
+
 //body parser
 app.use(express.json());
 const connectdb = require("./config/db"); // connect to mongodb
 const colors = require("colors");
 const errorHandler = require("./middleware/error");
+const fileUpload = require("express-fileupload");
 
 //const port = process.env.PORT || 5000;
 const morgan = require("morgan");
@@ -28,6 +30,10 @@ if (process.env.NODE_ENV === "development") {
   // app.use(morgan("combined", { stream: accessLogStream }));
   app.use(morgan("dev"));
 }
+//file upload
+app.use(fileUpload());
+//set static folder
+app.use(express.static(path.join(__dirname, "public")));
 
 //mount the  resource router file
 app.use("/api/v1/bootcamps", require("./routes/bootcamp"));
