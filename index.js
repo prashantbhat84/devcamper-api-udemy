@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-
+const cookie = require("cookie-parser");
 //body parser
 app.use(express.json());
 const connectdb = require("./config/db"); // connect to mongodb
@@ -32,6 +32,8 @@ if (process.env.NODE_ENV === "development") {
 }
 //file upload
 app.use(fileUpload());
+//cookie parser
+app.use(cookie());
 //set static folder
 app.use(express.static(path.join(__dirname, "public")));
 

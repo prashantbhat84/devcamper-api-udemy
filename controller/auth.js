@@ -10,9 +10,10 @@ exports.registerUser = asyncHandler(async (req, res, next) => {
 
   //create user
   const user = await User.create({ name, email, password, role });
-  // create token.
-  const token = user.getSignedJWTToken();
-  res.status(200).json({ success: true, token });
+  // // create token.
+  // const token = user.getSignedJWTToken();
+  // res.status(200).json({ success: true, token });
+  sendToken(user, 200, res);
 });
 //@desc  login user
 //@method  POST /api/v1/auth/login
@@ -38,6 +39,35 @@ exports.loginUser = asyncHandler(async (req, res, next) => {
   }
 
   // create token.
+  // const token = user.getSignedJWTToken();
+  // res.status(200).json({ success: true, token });
+  sendToken(user, 200, res);
+});
+
+//get token from model  create cookie and send response.
+const sendToken = (user, statusCode, res) => {
+  // create token.
   const token = user.getSignedJWTToken();
-  res.status(200).json({ success: true, token });
+  const options = {
+    expires: new Date(
+      Date.now() + process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000
+    ),
+    httpOnly: true
+  };
+  if (process.env.NODE_ENV === "production") {
+    options.secure = true;
+  }
+  console.log(options);
+  res
+    .status(statusCode)
+    .cookie("token", token, options)
+    .json({ success: true, token });
+};
+
+//@desc  get current logged in user
+//@method  GET /api/v1/auth/me
+//@access   private
+exports.getme = asyncHandler(async (req, res, next) => {
+  const user = await User.findById(req.user.id);
+  res.status(200).json({ success: true, User: user });
 });
