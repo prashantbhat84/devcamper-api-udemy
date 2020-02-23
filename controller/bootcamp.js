@@ -142,6 +142,15 @@ exports.uploadBootcampPhoto = asyncHandler(async (req, res, next) => {
       )
     );
   }
+  //check for ownership of photo
+  if (req.user.id !== bootcamp.user.toString() && req.user.role !== "admin") {
+    return next(
+      new ErrorResponse(
+        ` User ${req.user.id} is not authorized to delete this bootcamp`,
+        401
+      )
+    );
+  }
   if (!req.files) {
     return next(new ErrorResponse(`Please upload afile `, 400));
   }
