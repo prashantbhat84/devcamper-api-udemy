@@ -77,6 +77,15 @@ exports.updateCourse = asyncHandler(async (req, res, next) => {
       new ErrorResponse(`course with ${req.params.id} not found`, 404)
     );
   }
+  //check if the logged in user is the course owner
+  if (req.user.id !== course.user.toString() && req.user.role !== "admin") {
+    return next(
+      new ErrorResponse(
+        ` User ${req.user.id} is not authorized to update a course  ${course._id}`,
+        401
+      )
+    );
+  }
   course = await Course.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
     runValidators: true
@@ -93,6 +102,15 @@ exports.deleteCourse = asyncHandler(async (req, res, next) => {
   if (!course) {
     return next(
       new ErrorResponse(`course with ${req.params.id} not found`, 404)
+    );
+  }
+  //check if the logged in user is the bootcamp owner
+  if (req.user.id !== course.user.toString() && req.user.role !== "admin") {
+    return next(
+      new ErrorResponse(
+        ` User ${req.user.id} is not authorized to delete a course ${course._id}`,
+        401
+      )
     );
   }
   course.remove();
