@@ -108,6 +108,27 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
   sendToken(user, 200, res);
 });
 
+//@desc  Update user details
+//@method  PUT /api/v1/auth/updatedetails
+//@access   private
+exports.updateUserDetails = asyncHandler(async (req, res, next) => {
+  const fieldsToUpdate = {
+    name: req.body.name,
+    email: req.body.email
+  };
+  const user = await User.findByIdAndUpdate(req.user.id, fieldsToUpdate, {
+    new: true,
+    runValidators: true
+  });
+  // check weather user exists in DB
+  if (!user) {
+    return next(
+      new ErrorResponse(`User with ${req.body.email} does not exist`, 404)
+    );
+  }
+  res.status(200).json({ success: true, User: user });
+});
+
 //get token from model  create cookie and send response.
 const sendToken = (user, statusCode, res) => {
   // create token.
@@ -121,7 +142,7 @@ const sendToken = (user, statusCode, res) => {
   if (process.env.NODE_ENV === "production") {
     options.secure = true;
   }
-  console.log(options);
+
   res
     .status(statusCode)
     .cookie("token", token, options)
