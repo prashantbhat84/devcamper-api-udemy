@@ -129,6 +129,20 @@ exports.updateUserDetails = asyncHandler(async (req, res, next) => {
   res.status(200).json({ success: true, User: user });
 });
 
+//@desc  update logged inuser password
+//@method  PUT /api/v1/auth/updatepassword
+//@access   private
+exports.updatePassword = asyncHandler(async (req, res, next) => {
+  const user = await User.findById(req.user.id).select("+password");
+  //check currentpassword
+  if (!(await user.matchPassword(req.body.currentpassword))) {
+    return next(new ErrorResponse(`Current password does not match.`, 401));
+  }
+  user.password = req.body.newpassword;
+  await user.save();
+  sendToken(user, 200, res);
+});
+
 //get token from model  create cookie and send response.
 const sendToken = (user, statusCode, res) => {
   // create token.
