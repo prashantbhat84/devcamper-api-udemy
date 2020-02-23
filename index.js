@@ -38,6 +38,7 @@ app.use(express.static(path.join(__dirname, "public")));
 //mount the  resource router file
 app.use("/api/v1/bootcamps", require("./routes/bootcamp"));
 app.use("/api/v1/courses", require("./routes/course"));
+app.use("/api/v1/auth", require("./routes/auth"));
 
 //error handler
 app.use(errorHandler);
