@@ -41,6 +41,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/api/v1/bootcamps", require("./routes/bootcamp"));
 app.use("/api/v1/courses", require("./routes/course"));
 app.use("/api/v1/auth", require("./routes/auth"));
+app.use("/api/v1/users", require("./routes/users"));
 
 //error handler
 app.use(errorHandler);

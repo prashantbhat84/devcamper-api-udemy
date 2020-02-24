@@ -18,7 +18,7 @@
     "slugify": "^1.3.6"
   },
   "scripts": {
-    "start": " SET NODE_ENV=production node index",
+    "start": " SET NODE_ENV=production nodemon index",
     "dev": "nodemon index"
   },
   "devDependencies": {
