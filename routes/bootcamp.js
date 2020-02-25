@@ -22,7 +22,7 @@ Router.use("/:bootcampId/courses", courseRouter);
 Router.route("/radius/:zipcode/:distance").get(getBootcampsInRadius);
 Router.route("/")
   .get(advancedResults(Bootcamp, "courses"), getBootcamps)
-  .post(protectRoute, authorize("publisher", "admin"), createBootcamp);
+  .post(protectRoute, authorize("publisher", "admin", "user"), createBootcamp);
 Router.route("/:id")
   .get(getBootcamp)
   .put(protectRoute, authorize("publisher", "admin"), updateBootcamp)
