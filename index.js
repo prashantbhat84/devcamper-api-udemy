@@ -7,6 +7,9 @@ const connectdb = require("./config/db"); // connect to mongodb
 const colors = require("colors");
 const errorHandler = require("./middleware/error");
 const fileUpload = require("express-fileupload");
+// express mongo santize to prevent nosql injection attacks
+const mongoSanitize = require("express-mongo-sanitize");
+app.use(mongoSanitize());
 
 //const port = process.env.PORT || 5000;
 const morgan = require("morgan");

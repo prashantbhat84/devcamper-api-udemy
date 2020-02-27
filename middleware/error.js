@@ -9,7 +9,7 @@ const errorHandler = (err, req, res, next) => {
 
   if (err.name === "CastError") {
     // catch block error in bootcamp controller
-    const message = `Resource with ID :${err.value} does not exist`;
+    const message = `Resource not Found`;
     error = new ErrorResponse(message, 404);
   }
   //duplicate key entry error
