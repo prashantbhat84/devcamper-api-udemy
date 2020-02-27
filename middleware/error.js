@@ -3,7 +3,7 @@ const errorHandler = (err, req, res, next) => {
   let error = { ...err };
   error.message = err.message;
   //log to console for dev only while testing and you get an error code of 500
-  console.log(err);
+  // console.log(err);
 
   //mongoose bad object ID
 
