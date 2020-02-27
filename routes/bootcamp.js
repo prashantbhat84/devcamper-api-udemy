@@ -1,11 +1,12 @@
 const express = require("express");
 // Resource Router single bootcamp  many courses
 const courseRouter = require("./course");
+const reviewRouter = require("./review");
 //protect route middleware
 const { protectRoute, authorize } = require("../middleware/auth");
 
-const Router = express.Router();
 const advancedResults = require("../middleware/advancedResults");
+const Router = express.Router();
 const Bootcamp = require("../models/Bootcamp");
 
 const {
@@ -19,10 +20,12 @@ const {
 } = require("../controller/bootcamp");
 // Re-route into other  resource routers
 Router.use("/:bootcampId/courses", courseRouter);
+Router.use("/:bootcampId/reviews", reviewRouter);
+// get bootcamps within vicinity
 Router.route("/radius/:zipcode/:distance").get(getBootcampsInRadius);
 Router.route("/")
   .get(advancedResults(Bootcamp, "courses"), getBootcamps)
-  .post(protectRoute, authorize("publisher", "admin", "user"), createBootcamp);
+  .post(protectRoute, authorize("publisher", "admin"), createBootcamp);
 Router.route("/:id")
   .get(getBootcamp)
   .put(protectRoute, authorize("publisher", "admin"), updateBootcamp)
