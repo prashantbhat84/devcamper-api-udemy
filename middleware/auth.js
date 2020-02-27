@@ -10,8 +10,10 @@ exports.protectRoute = asyncHandler(async (req, res, next) => {
     req.headers.authorization &&
     req.headers.authorization.startsWith("Bearer")
   ) {
+    // set token from headers
     token = req.headers.authorization.split(" ")[1];
   } else if (req.cookies.token) {
+    // set token from cookie
     console.log("cookie exists");
     token = req.cookies.token;
   }
