@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router({ mergeParams: true });
-const { getReviews } = require("../controller/review");
+const { getReviews, getReview } = require("../controller/review");
 const { protectRoute, authorize } = require("../middleware/auth");
 const Review = require("../models/Review");
 
@@ -13,5 +13,5 @@ router.route("/").get(
   }),
   getReviews
 );
-
+router.route("/:id").get(getReview);
 module.exports = router;
