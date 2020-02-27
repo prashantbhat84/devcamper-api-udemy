@@ -10,6 +10,9 @@ const fileUpload = require("express-fileupload");
 // express mongo santize to prevent nosql injection attacks
 const mongoSanitize = require("express-mongo-sanitize");
 app.use(mongoSanitize());
+//XSS protection
+const helmet = require("helmet");
+app.use(helmet());
 
 //const port = process.env.PORT || 5000;
 const morgan = require("morgan");
