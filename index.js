@@ -16,7 +16,16 @@ app.use(helmet());
 //prevent XSS
 const xss = require("xss-clean");
 app.use(xss());
-
+//rate limit & param populate exploit
+const rateLimiter = require("express-rate-limit");
+const hpp = require("hpp");
+const limit = rateLimiter({
+  windowMs: 10 * 60 * 1000,
+  max: 100
+});
+app.use(limit);
+app.use(hpp());
+app.use(require("cors"));
 //const port = process.env.PORT || 5000;
 const morgan = require("morgan");
 const fs = require("fs");
